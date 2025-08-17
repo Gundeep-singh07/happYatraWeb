@@ -11,10 +11,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bus, Mail, Lock, User, ArrowLeft } from "lucide-react";
+import {
+  Bus,
+  Mail,
+  Lock,
+  User,
+  ArrowLeft,
+  CheckCircle,
+  AlertTriangle,
+  Loader2,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { apiService } from "../services/apiService";
 import { STORAGE_KEYS } from "../constants/constants";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -120,14 +130,18 @@ const Auth = () => {
           <CardContent>
             {/* Success/Error Messages */}
             {success && (
-              <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
-                {success}
-              </div>
+              <Alert variant="default" className="mb-4 bg-green-500/10 border-green-500/50 text-green-700">
+                <CheckCircle className="h-4 w-4" />
+                <AlertTitle>Success</AlertTitle>
+                <AlertDescription>{success}</AlertDescription>
+              </Alert>
             )}
             {error && (
-              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-                {error}
-              </div>
+              <Alert variant="destructive" className="mb-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             )}
 
             <Tabs defaultValue="login" className="w-full">
@@ -179,6 +193,9 @@ const Auth = () => {
                     className="w-full glow-effect"
                     disabled={isLoading}
                   >
+                    {isLoading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : null}
                     {isLoading ? "Signing In..." : "Sign In"}
                   </Button>
                 </form>
@@ -246,6 +263,9 @@ const Auth = () => {
                     className="w-full glow-effect"
                     disabled={isLoading}
                   >
+                    {isLoading ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : null}
                     {isLoading ? "Creating Account..." : "Create Account"}
                   </Button>
                 </form>
