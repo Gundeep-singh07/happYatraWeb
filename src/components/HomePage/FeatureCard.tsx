@@ -1,28 +1,28 @@
-import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface FeatureCardProps {
   icon: LucideIcon;
   title: string;
   description: string;
-  delay?: number;
+  index: number;
 }
 
-const FeatureCard = ({ icon: Icon, title, description, delay = 0 }: FeatureCardProps) => {
+export const FeatureCard = ({ icon: Icon, title, description, index }: FeatureCardProps) => {
   return (
-    <Card 
-      className="p-6 card-hover animate-fade-in bg-card/50 backdrop-blur-sm border-border/50"
-      style={{ animationDelay: `${delay}ms` }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ scale: 1.02 }}
+      className="p-6 rounded-xl bg-card border border-border hover:border-primary/20 
+        transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
     >
-      <div className="flex flex-col items-center text-center space-y-4">
-        <div className="p-3 rounded-xl bg-primary/10 animate-float">
-          <Icon size={32} className="transport-icon" />
-        </div>
-        <h3 className="text-xl font-semibold text-foreground">{title}</h3>
-        <p className="text-muted-foreground leading-relaxed">{description}</p>
+      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+        <Icon className="w-6 h-6 text-primary" />
       </div>
-    </Card>
+      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      <p className="text-muted-foreground leading-relaxed">{description}</p>
+    </motion.div>
   );
 };
-
-export default FeatureCard;

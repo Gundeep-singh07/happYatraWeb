@@ -3,21 +3,39 @@ import { Brain, Route, Clock, BarChart3, Zap, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/HomePage/Header";
 import heroImage from "@/assets/hero-transport.jpg";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { FeatureCard } from "@/components/HomePage/FeatureCard";
 
-// Simple FeatureCard without animations
-const FeatureCard = ({ icon: Icon, title, description }) => {
-  return (
-    <div className="p-6 rounded-xl bg-card border border-border hover:border-primary/20 transition-all duration-300 hover:shadow-lg">
-      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-        <Icon className="w-6 h-6 text-primary" />
-      </div>
-      <h3 className="text-xl font-semibold mb-3">{title}</h3>
-      <p className="text-muted-foreground leading-relaxed">{description}</p>
-    </div>
-  );
+const heroVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      duration: 0.8,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
 };
 
 const Index = () => {
+  const featuresSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToFeatures = () => {
+    featuresSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const features = [
     {
       icon: Brain,
@@ -57,42 +75,74 @@ const Index = () => {
     },
   ];
 
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { scrollYProgress } = useScroll();
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight,
+      });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
-    <div className="min-h-screen scroll-smooth">
+    <div className="min-h-screen scroll-smooth relative bg-gradient-to-b from-black via-gray-900 to-black">
+      {/* Animated Background Gradient */}
+      <motion.div
+        className="fixed inset-0 opacity-30 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, rgb(59, 130, 246, 0.15), transparent 25%)`,
+        }}
+      />
+
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/50 to-background" />
-        <div
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={heroVariants}
+        className="relative pt-20 pb-16 overflow-hidden"
+      >
+        <motion.div
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: `url(${heroImage})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            y: backgroundY,
           }}
         />
 
         <div className="relative container mx-auto px-6 py-16">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div>
+          <motion.div className="max-w-4xl mx-auto text-center space-y-8">
+            <motion.div variants={itemVariants}>
               <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
                 Smart Transport
                 <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent block">
                   Revolution
                 </span>
               </h1>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div variants={itemVariants}>
               <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 AI-driven dynamic route rationalization system that leverages
                 real-time data to optimize public transport routes, reduce
                 delays, and enhance commuter experience.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
+            >
               <Link to="/auth">
                 <Button
                   size="lg"
@@ -105,18 +155,32 @@ const Index = () => {
                 variant="outline"
                 size="lg"
                 className="text-lg px-8 py-6 border-primary/30 hover:bg-primary/10 transition-all duration-300"
+                onClick={scrollToFeatures}
               >
                 Learn More
               </Button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Features Section */}
-      <section className="py-20 bg-card/20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl mx-auto text-center mb-16">
+      <section
+        ref={featuresSectionRef}
+        className="py-20 relative overflow-hidden"
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="container mx-auto px-6"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl mx-auto text-center mb-16"
+          >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Intelligent Transport
               <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
@@ -129,7 +193,7 @@ const Index = () => {
               advanced analytics, real-time optimization, and seamless
               integration.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {features.map((feature, index) => (
@@ -138,17 +202,28 @@ const Index = () => {
                 icon={feature.icon}
                 title={feature.title}
                 description={feature.description}
+                index={index}
               />
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="py-20"
+      >
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-12">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-12 backdrop-blur-sm border border-white/10">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Ready to Transform Your City's Transport?
               </h2>
@@ -162,9 +237,9 @@ const Index = () => {
                 </Button>
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </div>
   );
 };
