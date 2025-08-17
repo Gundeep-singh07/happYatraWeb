@@ -34,7 +34,7 @@ const Dashboard = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
@@ -43,7 +43,7 @@ const Dashboard = () => {
   // Not authenticated state
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-white text-2xl font-bold mb-6">Welcome</h1>
           <p className="text-gray-400 mb-8">
@@ -147,9 +147,7 @@ const Dashboard = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Welcome back,{" "}
-            <span className="text-blue-400">
-              {user.fullName?.split(" ")[0] || "User"}
-            </span>
+            <span className="text-blue-400">{user.fullName.split(" ")[0]}</span>
           </h1>
           <p className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto">
             Your comprehensive transport and navigation dashboard - everything
@@ -182,6 +180,7 @@ const Dashboard = () => {
                       {action.description}
                     </p>
                   </div>
+
                   {/* Explore More Button */}
                   <div className="absolute bottom-4 right-4 transform translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out">
                     <button
