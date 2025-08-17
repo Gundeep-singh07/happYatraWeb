@@ -53,7 +53,7 @@ const Header = ({ user }: HeaderProps) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-bold text-white">Dashboard</h1>
+            <h1 className="text-xl font-bold text-white">happYatra</h1>
           </div>
 
           {/* Desktop Navigation */}
