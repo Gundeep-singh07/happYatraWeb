@@ -14,7 +14,16 @@ export const API_ENDPOINTS = {
   },
   USER: {
     PROFILE: `${API_BASE_URL}/user/profile`,
-    UPDATE: `${API_BASE_URL}/user/update`,
+    UPDATE_PROFILE: `${API_BASE_URL}/user/profile`,
+    UPLOAD_AVATAR: `${API_BASE_URL}/user/upload-avatar`,
+    DELETE_ACCOUNT: `${API_BASE_URL}/user/account`,
+    HEALTH: `${API_BASE_URL}/user/health`,
+    // Location endpoints
+    UPDATE_LOCATION: `${API_BASE_URL}/user/location`,
+    LOCATION_PREFERENCES: `${API_BASE_URL}/user/location/preferences`,
+    LOCATION_HISTORY: `${API_BASE_URL}/user/location/history`,
+    NEARBY_USERS: `${API_BASE_URL}/user/nearby`,
+    UPDATE_STATS: `${API_BASE_URL}/user/stats`,
   },
   NOTIFICATIONS: {
     LIST: `${API_BASE_URL}/notifications`,
@@ -37,6 +46,8 @@ export const API_ENDPOINTS = {
       BULK_UPDATE: `${API_BASE_URL}/admin/notifications/bulk-update`,
     },
   },
+  HEALTH: `${API_BASE_URL}/health`,
+  TEST: `${API_BASE_URL}/test`,
 };
 
 // Storage Keys
@@ -45,38 +56,106 @@ export const STORAGE_KEYS = {
   USER: "happyatra_user",
   PREFERENCES: "happyatra_preferences",
   LOCATION: "happyatra_location",
+  THEME: "happyatra_theme",
+  LANGUAGE: "happyatra_language",
 } as const;
 
-// User Interface
+// Location Interfaces
+export interface LocationData {
+  latitude: number;
+  longitude: number;
+  accuracy?: number;
+  address?: string;
+  lastUpdated?: string;
+}
+
+export interface LocationPreferences {
+  shareLocation: boolean;
+  trackingEnabled: boolean;
+  allowNotifications: boolean;
+  radius: number;
+}
+
+export interface LocationHistoryEntry {
+  latitude: number;
+  longitude: number;
+  accuracy?: number;
+  address?: string;
+  timestamp: string;
+}
+
+// User Stats Interface
+export interface UserStats {
+  totalTrips: number;
+  totalDistance: number;
+  co2Saved: number;
+  moneySaved: number;
+  lastActive: string;
+}
+
+// User Preferences Interface
+export interface UserPreferences {
+  theme: "light" | "dark" | "system";
+  language: string;
+  notifications: {
+    email: boolean;
+    push: boolean;
+    sms: boolean;
+  };
+  transportation: {
+    preferredModes: string[];
+    defaultRadius: number;
+  };
+}
+
+// User Interface (Updated)
 export interface User {
   _id: string;
   id?: string;
   fullName: string;
   email: string;
   role: "admin" | "user" | "moderator";
-  avatar?: string;
+  profilePicture?: {
+    url: string;
+    publicId: string;
+  };
   phone?: string;
   isVerified?: boolean;
+  isActive?: boolean;
+  address?: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
+  location?: LocationData;
+  locationHistory?: LocationHistoryEntry[];
+  locationPreferences?: LocationPreferences;
   preferences?: UserPreferences;
+  stats?: UserStats;
   createdAt: string;
   updatedAt: string;
 }
 
-// User Preferences
-export interface UserPreferences {
-  notifications: {
-    email: boolean;
-    push: boolean;
-    sms: boolean;
+// Nearby User Interface
+export interface NearbyUser {
+  _id: string;
+  fullName: string;
+  profilePicture?: {
+    url: string;
+    publicId: string;
   };
   location: {
-    shareLocation: boolean;
-    radius: number;
+    address?: string;
+    latitude: number;
+    longitude: number;
   };
-  privacy: {
-    profileVisibility: "public" | "private" | "friends";
-    dataSharing: boolean;
+  stats: {
+    totalTrips: number;
   };
+  distance: number;
+  memberSince: string;
 }
 
 // Notification Interfaces
@@ -140,8 +219,18 @@ export type NotificationType =
   | "success";
 
 export type NotificationStatus = "draft" | "active" | "inactive" | "expired";
-
 export type NotificationPriority = "low" | "medium" | "high" | "urgent";
+
+// Transportation Types
+export type TransportationType =
+  | "bus"
+  | "metro"
+  | "taxi"
+  | "walking"
+  | "cycling"
+  | "carpooling"
+  | "train"
+  | "auto";
 
 // Notification Configuration
 export const NOTIFICATION_CONFIG = {
@@ -222,6 +311,50 @@ export const NOTIFICATION_CONFIG = {
   },
 } as const;
 
+// Transportation Mode Configuration
+export const TRANSPORT_CONFIG = {
+  bus: {
+    icon: "🚌",
+    label: "Bus",
+    color: "bg-blue-500",
+  },
+  metro: {
+    icon: "🚇",
+    label: "Metro",
+    color: "bg-green-500",
+  },
+  taxi: {
+    icon: "🚖",
+    label: "Taxi",
+    color: "bg-yellow-500",
+  },
+  walking: {
+    icon: "🚶",
+    label: "Walking",
+    color: "bg-gray-500",
+  },
+  cycling: {
+    icon: "🚴",
+    label: "Cycling",
+    color: "bg-emerald-500",
+  },
+  carpooling: {
+    icon: "🚗",
+    label: "Carpooling",
+    color: "bg-purple-500",
+  },
+  train: {
+    icon: "🚂",
+    label: "Train",
+    color: "bg-indigo-500",
+  },
+  auto: {
+    icon: "🛺",
+    label: "Auto",
+    color: "bg-orange-500",
+  },
+} as const;
+
 // Priority Colors
 export const PRIORITY_COLORS = {
   low: "text-green-400",
@@ -244,6 +377,8 @@ export interface ApiResponse<T = any> {
   data?: T;
   message: string;
   error?: string;
+  token?: string;
+  user?: User;
 }
 
 // Notifications Response
@@ -304,14 +439,6 @@ export interface NotificationStats {
   totalNotifications: number;
 }
 
-// Location Interface
-export interface LocationData {
-  latitude: number;
-  longitude: number;
-  accuracy?: number;
-  timestamp?: number;
-}
-
 // Error Interface
 export interface AppError {
   code: string;
@@ -360,6 +487,20 @@ export const ANIMATIONS = {
 
 // Validation Rules
 export const VALIDATION_RULES = {
+  user: {
+    fullName: {
+      minLength: 2,
+      maxLength: 50,
+      required: true,
+    },
+    email: {
+      required: true,
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    },
+    phone: {
+      pattern: /^[+]?[\d\s\-\(\)]{10,15}$/,
+    },
+  },
   notification: {
     title: {
       minLength: 3,
@@ -413,6 +554,10 @@ export const VALIDATION_RULES = {
       max: 1000,
       default: 50,
     },
+    accuracy: {
+      min: 0,
+      max: 100000,
+    },
   },
   pagination: {
     page: {
@@ -429,6 +574,31 @@ export const VALIDATION_RULES = {
 
 // Default Values
 export const DEFAULT_VALUES = {
+  user: {
+    theme: "system" as const,
+    language: "en",
+    notifications: {
+      email: true,
+      push: true,
+      sms: false,
+    },
+    transportation: {
+      preferredModes: [] as TransportationType[],
+      defaultRadius: 5,
+    },
+    locationPreferences: {
+      shareLocation: true,
+      trackingEnabled: false,
+      allowNotifications: true,
+      radius: 50,
+    },
+    stats: {
+      totalTrips: 0,
+      totalDistance: 0,
+      co2Saved: 0,
+      moneySaved: 0,
+    },
+  },
   notification: {
     priority: "medium" as NotificationPriority,
     type: "info" as NotificationType,
@@ -442,6 +612,7 @@ export const DEFAULT_VALUES = {
   },
   location: {
     radius: 50, // km
+    accuracy: 10, // meters
   },
   filters: {
     type: "all",
@@ -462,6 +633,11 @@ export const FEATURE_FLAGS = {
   exportData: true,
   analytics: true,
   darkMode: true,
+  carpooling: true,
+  liveTracking: true,
+  nearbyUsers: true,
+  weatherIntegration: true,
+  routeOptimization: true,
 } as const;
 
 // App Configuration
@@ -471,8 +647,14 @@ export const APP_CONFIG = {
   description: "Smart Travel Notification System",
   author: "HappYatra Team",
   supportEmail: "support@happyatra.com",
-  maxFileUploadSize: 10 * 1024 * 1024, // 10MB
-  supportedImageTypes: ["image/jpeg", "image/png", "image/gif", "image/webp"],
+  maxFileUploadSize: 5 * 1024 * 1024, // 5MB
+  supportedImageTypes: [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+  ],
   supportedDocumentTypes: [
     "application/pdf",
     "application/msword",
@@ -484,14 +666,129 @@ export const APP_CONFIG = {
   dateFormat: "DD/MM/YYYY",
   timeFormat: "HH:mm",
   currency: "INR",
+  map: {
+    defaultZoom: 15,
+    maxZoom: 20,
+    minZoom: 5,
+    defaultCenter: {
+      latitude: 28.6139, // New Delhi
+      longitude: 77.209,
+    },
+  },
+  location: {
+    updateInterval: 30000, // 30 seconds for live tracking
+    significantDistance: 50, // meters - minimum distance to trigger update
+    maxLocationAge: 300000, // 5 minutes - max age of cached location
+    highAccuracyTimeout: 15000, // 15 seconds timeout for high accuracy
+    lowAccuracyTimeout: 30000, // 30 seconds timeout for low accuracy
+  },
 } as const;
 
-// Export everything as default as well
+// Error Messages
+export const ERROR_MESSAGES = {
+  location: {
+    notSupported: "Location services are not supported by your browser",
+    permissionDenied:
+      "Location access denied. Please enable location permissions.",
+    positionUnavailable:
+      "Unable to retrieve your location. Please check your GPS settings.",
+    timeout: "Location request timed out. Please try again.",
+    networkError:
+      "Network error while getting location. Please check your connection.",
+    unknownError: "An unknown error occurred while getting your location.",
+  },
+  api: {
+    networkError: "Network error. Please check your internet connection.",
+    serverError: "Server error. Please try again later.",
+    unauthorized: "Session expired. Please log in again.",
+    forbidden: "You don't have permission to perform this action.",
+    notFound: "The requested resource was not found.",
+    validationError: "Please check your input and try again.",
+    uploadError: "File upload failed. Please try again.",
+    fileTooLarge: "File is too large. Maximum size is 5MB.",
+    invalidFileType: "Invalid file type. Only images are allowed.",
+  },
+  user: {
+    profileUpdateFailed: "Failed to update profile. Please try again.",
+    locationUpdateFailed: "Failed to update location. Please try again.",
+    statsUpdateFailed: "Failed to update statistics. Please try again.",
+    accountDeleteFailed: "Failed to delete account. Please try again.",
+  },
+} as const;
+
+// Success Messages
+export const SUCCESS_MESSAGES = {
+  user: {
+    profileUpdated: "Profile updated successfully!",
+    locationUpdated: "Location updated successfully!",
+    preferencesUpdated: "Preferences updated successfully!",
+    statsUpdated: "Statistics updated successfully!",
+    avatarUploaded: "Profile picture updated successfully!",
+    accountDeleted: "Account deleted successfully!",
+  },
+  location: {
+    detected: "Location detected successfully!",
+    trackingEnabled: "Live tracking enabled!",
+    trackingDisabled: "Live tracking disabled!",
+    updated: "Location updated!",
+  },
+} as const;
+
+// Loading Messages
+export const LOADING_MESSAGES = {
+  location: {
+    detecting: "Detecting your location...",
+    updating: "Updating your location...",
+    tracking: "Tracking your location...",
+  },
+  user: {
+    loading: "Loading your profile...",
+    updating: "Updating your profile...",
+    uploading: "Uploading image...",
+    deleting: "Deleting account...",
+  },
+  api: {
+    connecting: "Connecting to server...",
+    processing: "Processing your request...",
+  },
+} as const;
+
+// Time Constants
+export const TIME_CONSTANTS = {
+  SECOND: 1000,
+  MINUTE: 60 * 1000,
+  HOUR: 60 * 60 * 1000,
+  DAY: 24 * 60 * 60 * 1000,
+  WEEK: 7 * 24 * 60 * 60 * 1000,
+  MONTH: 30 * 24 * 60 * 60 * 1000,
+} as const;
+
+// Distance Constants (in meters)
+export const DISTANCE_CONSTANTS = {
+  METER: 1,
+  KILOMETER: 1000,
+  MILE: 1609.34,
+  SIGNIFICANT_MOVE: 50, // meters
+  NEARBY_RADIUS: 5000, // 5km
+  MAX_SEARCH_RADIUS: 100000, // 100km
+} as const;
+
+// Local Storage Keys for different data types
+export const CACHE_KEYS = {
+  LOCATION_CACHE: "location_cache",
+  USER_PREFERENCES_CACHE: "user_preferences_cache",
+  NOTIFICATION_CACHE: "notification_cache",
+  ROUTE_CACHE: "route_cache",
+  WEATHER_CACHE: "weather_cache",
+} as const;
+
+// Export everything as default as well for convenience
 export default {
   API_BASE_URL,
   API_ENDPOINTS,
   STORAGE_KEYS,
   NOTIFICATION_CONFIG,
+  TRANSPORT_CONFIG,
   PRIORITY_COLORS,
   STATUS_COLORS,
   THEME_COLORS,
@@ -500,4 +797,10 @@ export default {
   DEFAULT_VALUES,
   FEATURE_FLAGS,
   APP_CONFIG,
+  ERROR_MESSAGES,
+  SUCCESS_MESSAGES,
+  LOADING_MESSAGES,
+  TIME_CONSTANTS,
+  DISTANCE_CONSTANTS,
+  CACHE_KEYS,
 };
