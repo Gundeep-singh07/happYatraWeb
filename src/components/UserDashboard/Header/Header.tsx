@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { STORAGE_KEYS, User } from "../../../constants/constants";
 
 interface HeaderProps {
-  user: User;
+  user: User | null;
 }
 
 const Header = ({ user }: HeaderProps) => {
@@ -46,6 +46,24 @@ const Header = ({ user }: HeaderProps) => {
     window.location.href = href;
     setIsMobileMenuOpen(false);
   };
+
+  // If no user, show a minimal header
+  if (!user) {
+    return (
+      <header className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex-shrink-0">
+              <h1 className="text-xl font-bold text-white">happYatra</h1>
+            </div>
+            <div className="animate-pulse">
+              <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
@@ -92,7 +110,7 @@ const Header = ({ user }: HeaderProps) => {
                 {user.profilePicture?.url ? (
                   <img
                     src={user.profilePicture.url}
-                    alt={user.fullName}
+                    alt={user.fullName || "User"}
                     className="w-8 h-8 rounded-full object-cover border-2 border-gray-600"
                   />
                 ) : (
@@ -114,10 +132,10 @@ const Header = ({ user }: HeaderProps) => {
                   <div className="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50">
                     <div className="px-4 py-3 border-b border-gray-700">
                       <p className="text-sm font-medium text-white">
-                        {user.fullName}
+                        {user.fullName || "User"}
                       </p>
                       <p className="text-xs text-gray-400 truncate">
-                        {user.email}
+                        {user.email || ""}
                       </p>
                     </div>
                     <div className="py-2">

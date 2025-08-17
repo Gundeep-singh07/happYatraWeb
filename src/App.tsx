@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./components/UserDashboard/Dashboard/Dashboard";
-import ProfilePage from "./components/UserDashboard/UserProfile/Profile"; // Add this import
+import ProfilePage from "./components/UserDashboard/UserProfile/Profile";
+import UserNotifications from "./components/UserDashboard/Dashboard/Notifications/notifications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,8 +22,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<ProfilePage />} />{" "}
-          {/* Add this route */}
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/notifications" element={<UserNotifications />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
