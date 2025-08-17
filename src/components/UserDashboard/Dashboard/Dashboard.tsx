@@ -135,7 +135,7 @@ const Dashboard = () => {
     {
       name: "Maps",
       href: "/maps",
-      color: "border-green-500/30",
+      color: "border-blue-500/30 bg-blue-500/5",
       icon: Map,
       description:
         "Navigate with precision using our advanced GPS tracking system. Get real-time traffic updates, road closure alerts, and intelligent route optimization. Our maps feature supports multiple transportation modes including walking, cycling, driving, and public transit. Access offline maps for areas with poor connectivity, view satellite imagery, and get turn-by-turn voice navigation. Perfect for daily commutes, long road trips, or exploring new cities with confidence and efficiency.",
@@ -143,7 +143,7 @@ const Dashboard = () => {
     {
       name: "Carpooling",
       href: "/carpooling",
-      color: "border-blue-500/30",
+      color: "border-blue-500/30 bg-blue-500/5",
       icon: Users,
       description:
         "Connect with fellow commuters and share your journey while reducing costs and environmental impact. Our smart matching algorithm pairs you with compatible travelers based on routes, schedules, and preferences. Features include secure payment processing, rating systems, real-time tracking for safety, and flexible scheduling options. Whether you're offering rides or looking for one, build a community of trusted travel partners while saving money and contributing to a greener planet.",
@@ -151,7 +151,7 @@ const Dashboard = () => {
     {
       name: "Bus Tracker",
       href: "/bus-tracker",
-      color: "border-orange-500/30",
+      color: "border-blue-500/30 bg-blue-500/5",
       icon: Bus,
       description:
         "Never miss your bus again with live tracking and predictive arrival times. Access comprehensive route information, schedule updates, and service disruptions in real-time. Plan your journey with multi-route options, set custom alerts for your regular buses, and receive notifications about delays or changes. Our system integrates with city transport APIs to provide the most accurate and up-to-date information for efficient public transportation usage.",
@@ -159,7 +159,7 @@ const Dashboard = () => {
     {
       name: "Metro",
       href: "/metro",
-      color: "border-purple-500/30",
+      color: "border-blue-500/30 bg-blue-500/5",
       icon: Train,
       description:
         "Navigate underground rail systems with ease using detailed metro maps and schedules. Get real-time platform information, service status updates, and optimal transfer points. Plan multi-line journeys with step-by-step directions, check accessibility features for each station, and receive alerts about service disruptions. Our comprehensive metro guide includes fare information, station facilities, and integration with other transportation modes for seamless urban travel.",
@@ -167,7 +167,7 @@ const Dashboard = () => {
     {
       name: "Weather",
       href: "/weather",
-      color: "border-cyan-500/30",
+      color: "border-blue-500/30 bg-blue-500/5",
       icon: Cloud,
       description:
         "Make informed travel decisions with comprehensive weather forecasting and alerts. Get hourly and 7-day forecasts, precipitation probability, wind conditions, and visibility reports. Receive weather-based travel recommendations, severe weather warnings, and seasonal travel tips. Our system integrates weather data with transportation modes to suggest the best travel options based on current and predicted conditions, ensuring your safety and comfort.",
@@ -175,7 +175,7 @@ const Dashboard = () => {
     {
       name: "Notifications",
       href: "/notifications",
-      color: "border-red-500/30",
+      color: "border-blue-500/30 bg-blue-500/5",
       icon: Bell,
       description:
         "Stay informed with personalized alerts and real-time updates about your travel ecosystem. Customize notifications for traffic jams, route changes, weather warnings, transportation delays, and emergency situations. Set location-based alerts, schedule reminders for regular trips, and receive proactive suggestions for alternative routes. Our intelligent notification system learns your patterns to deliver only the most relevant and timely information when you need it most.",
@@ -188,7 +188,7 @@ const Dashboard = () => {
       description:
         "View your travel history, analyze patterns, and quickly repeat frequent journeys with saved preferences.",
       icon: History,
-      color: "border-green-500/30 bg-green-500/5",
+      color: "border-blue-500/30 bg-blue-500/5",
     },
     {
       title: "Saved Routes",
@@ -202,7 +202,7 @@ const Dashboard = () => {
       description:
         "Customize your experience with preferences for notifications, travel modes, and account management.",
       icon: Settings,
-      color: "border-purple-500/30 bg-purple-500/5",
+      color: "border-blue-500/30 bg-blue-500/5",
     },
   ];
 
@@ -281,9 +281,10 @@ const Dashboard = () => {
                   key={action.name}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`group relative bg-black/40 backdrop-blur-sm ${action.color} 
-                  border-2 hover:border-opacity-80 transition-all duration-300 
-                  rounded-lg overflow-hidden hover:shadow-lg h-[300px]`}
+                  className={`group relative ${action.color} backdrop-blur-sm
+                  border-2 border-blue-500/30 hover:border-blue-400/50 
+                  transition-all duration-300 rounded-lg overflow-hidden 
+                  hover:shadow-lg hover:shadow-blue-500/10 h-[300px]`}
                 >
                   <div className="p-6 h-full flex flex-col">
                     <div className="flex items-center mb-4">
@@ -322,8 +323,10 @@ const Dashboard = () => {
                 <motion.div
                   key={feature.title}
                   whileHover={{ scale: 1.02 }}
-                  className={`${feature.color} border rounded-lg p-6 hover:bg-opacity-10 
-                  transition-all duration-300 cursor-pointer backdrop-blur-sm`}
+                  className={`${feature.color} border-2 border-blue-500/30 
+    hover:border-blue-400/50 rounded-lg p-6 
+    hover:shadow-lg hover:shadow-blue-500/10
+    transition-all duration-300 cursor-pointer backdrop-blur-sm`}
                 >
                   <div className="flex flex-col items-center text-center">
                     <IconComponent className="h-8 w-8 text-white mb-4" />

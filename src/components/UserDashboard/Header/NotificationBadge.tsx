@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -61,23 +62,31 @@ export default function NotificationBadge({
       variant="ghost"
       size="sm"
       onClick={handleClick}
-      className={`relative p-2 hover:bg-gray-800 ${className}`}
+      className={`relative p-2 hover:bg-gray-800/50 transition-colors duration-200 ${className}`}
       disabled={isLoading}
     >
-      <Bell className="h-5 w-5 text-gray-300" />
-      {unreadCount > 0 && (
-        <Badge
-          variant="destructive"
-          className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs rounded-full bg-red-600 text-white border-0"
-        >
-          {unreadCount > 99 ? "99+" : unreadCount}
-        </Badge>
-      )}
-      <span className="sr-only">
-        {unreadCount > 0
-          ? `${unreadCount} unread notifications`
-          : "Notifications"}
-      </span>
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ duration: 0.2 }}
+        className="relative"
+      >
+        <Bell className={`h-5 w-5 ${unreadCount > 0 ? 'text-blue-400' : 'text-gray-300'}`} />
+        {unreadCount > 0 && (
+          <Badge
+            variant="destructive"
+            className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 
+              text-xs rounded-full bg-red-500 text-white border-2 border-gray-900"
+          >
+            {unreadCount > 99 ? "99+" : unreadCount}
+          </Badge>
+        )}
+        <span className="sr-only">
+          {unreadCount > 0
+            ? `${unreadCount} unread notifications`
+            : "Notifications"}
+        </span>
+      </motion.div>
     </Button>
   );
 }
