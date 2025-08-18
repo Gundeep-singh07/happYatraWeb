@@ -44,7 +44,6 @@ const Header = ({ user }: HeaderProps) => {
     { name: "Carpooling", icon: Car, href: "/carpooling" },
     { name: "Bus Tracker", icon: Bus, href: "/bus-tracker" },
     { name: "Metro", icon: Train, href: "/metro" },
-    { name: "Weather", icon: CloudSun, href: "/weather" },
   ];
 
   const handleLogout = () => {
