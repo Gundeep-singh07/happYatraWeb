@@ -23,7 +23,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { apiService } from "../services/apiService";
+import apiService from "../services/apiService";
 import { STORAGE_KEYS } from "../constants/constants";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
@@ -101,21 +101,21 @@ const Auth = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
     >
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.2 }}
         className="absolute top-6 left-6"
       >
         <Link to="/">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
           >
             <ArrowLeft size={16} />
@@ -125,14 +125,14 @@ const Auth = () => {
       </motion.div>
 
       <div className="w-full max-w-md">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           className="flex items-center justify-center mb-8"
         >
           <div className="flex items-center space-x-3 bg-white/5 p-3 rounded-2xl backdrop-blur-md border border-white/10">
-            <motion.div 
+            <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
               className="text-blue-400"
@@ -167,7 +167,10 @@ const Auth = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                   >
-                    <Alert variant="default" className="mb-4 bg-green-500/10 border-green-500/30 text-green-400">
+                    <Alert
+                      variant="default"
+                      className="mb-4 bg-green-500/10 border-green-500/30 text-green-400"
+                    >
                       <CheckCircle className="h-4 w-4" />
                       <AlertTitle>Success</AlertTitle>
                       <AlertDescription>{success}</AlertDescription>
@@ -180,7 +183,10 @@ const Auth = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                   >
-                    <Alert variant="destructive" className="mb-4 bg-red-500/10 border-red-500/30">
+                    <Alert
+                      variant="destructive"
+                      className="mb-4 bg-red-500/10 border-red-500/30"
+                    >
                       <AlertTriangle className="h-4 w-4" />
                       <AlertTitle>Error</AlertTitle>
                       <AlertDescription>{error}</AlertDescription>
@@ -191,13 +197,13 @@ const Auth = () => {
 
               <Tabs defaultValue="login" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-800/50">
-                  <TabsTrigger 
+                  <TabsTrigger
                     value="login"
                     className="data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all"
                   >
                     Sign In
                   </TabsTrigger>
-                  <TabsTrigger 
+                  <TabsTrigger
                     value="signup"
                     className="data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all"
                   >
@@ -327,18 +333,24 @@ const Auth = () => {
                 </TabsContent>
               </Tabs>
 
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
                 className="mt-6 text-center text-sm text-gray-400"
               >
                 By continuing, you agree to our{" "}
-                <Link to="/terms" className="text-blue-400 hover:text-blue-300 transition-colors hover:underline">
+                <Link
+                  to="/terms"
+                  className="text-blue-400 hover:text-blue-300 transition-colors hover:underline"
+                >
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link to="/privacy" className="text-blue-400 hover:text-blue-300 transition-colors hover:underline">
+                <Link
+                  to="/privacy"
+                  className="text-blue-400 hover:text-blue-300 transition-colors hover:underline"
+                >
                   Privacy Policy
                 </Link>
               </motion.div>
