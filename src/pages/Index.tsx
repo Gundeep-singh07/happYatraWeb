@@ -209,33 +209,107 @@ const Index = () => {
         </motion.div>
       </section>
 
-      {/* CTA Section */}
+      {/* Enhanced CTA Section */}
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="py-20"
+        className="py-20 relative overflow-hidden"
       >
         <div className="container mx-auto px-6">
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto text-center"
+            className="relative max-w-5xl mx-auto"
           >
-            <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-12 backdrop-blur-sm border border-white/10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to Transform Your City's Transport?
-              </h2>
-              <p className="text-xl text-muted-foreground mb-8">
-                Join the future of intelligent public transportation with
-                happYatra's AI-powered optimization platform.
-              </p>
-              <Link to="/auth">
-                <Button size="lg" className="text-lg px-12 py-6">
-                  Get Started Today
-                </Button>
-              </Link>
+            {/* Background Elements */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl transform -rotate-1" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl transform rotate-1" />
+
+            {/* Main Content */}
+            <div className="relative bg-black/40 backdrop-blur-2xl rounded-2xl p-12 border border-white/10 overflow-hidden">
+              {/* Animated Gradient Orbs */}
+              <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl animate-blob" />
+              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-500/10 rounded-full filter blur-3xl animate-blob animation-delay-2000" />
+
+              <div className="relative z-10">
+                {/* Grid Pattern Overlay */}
+                <div className="absolute inset-0 bg-grid-white/10 bg-grid-16 opacity-10" />
+
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
+                  {/* Text Content */}
+                  <div className="flex-1 text-center lg:text-left">
+                    <motion.div
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
+                        Ready to Transform Your City's Transport?
+                      </h2>
+                      <p className="text-xl text-gray-400 mb-6">
+                        Join the future of intelligent public transportation with
+                        happYatra's AI-powered optimization platform.
+                      </p>
+
+                      {/* Stats Grid */}
+                      <div className="grid grid-cols-3 gap-4 mb-8">
+                        {[
+                          { value: "25+", label: "Cities" },
+                          { value: "1M+", label: "Routes Optimized" },
+                          { value: "98%", label: "Success Rate" },
+                        ].map((stat, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ y: 20, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 + i * 0.1 }}
+                            className="p-4 rounded-xl bg-white/5 backdrop-blur-sm"
+                          >
+                            <div className="text-2xl font-bold text-white">
+                              {stat.value}
+                            </div>
+                            <div className="text-sm text-gray-400">
+                              {stat.label}
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Action Card */}
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="w-full lg:w-auto"
+                  >
+                    <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                      <div className="flex flex-col gap-4">
+                        <Link to="/auth">
+                          <Button
+                            size="lg"
+                            className="w-full text-lg px-8 py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-300 hover:scale-105"
+                          >
+                            Get Started Today
+                          </Button>
+                        </Link>
+                        <Link to="/demo">
+                          <Button
+                            variant="ghost"
+                            size="lg"
+                            className="w-full text-lg px-8 py-6 hover:bg-white/5"
+                          >
+                            Watch Demo
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
