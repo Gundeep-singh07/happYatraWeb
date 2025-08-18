@@ -113,26 +113,15 @@ const Header = () => {
             </motion.div>
           </motion.div>
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Sign In Button Only */}
+          <div className="hidden md:flex items-center">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link to="/auth">
                 <Button 
-                  variant="ghost"
-                  className="relative group px-6 py-2 overflow-hidden rounded-full"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                  <span className="relative text-gray-300 group-hover:text-white">Sign In</span>
-                </Button>
-              </Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Link to="/auth">
-                <Button 
-                  className="relative px-6 py-2 bg-transparent overflow-hidden rounded-full border border-white/10 backdrop-blur-xl"
+                  className="relative px-6 py-2 bg-transparent overflow-hidden rounded-full border border-white/10 backdrop-blur-xl group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-600/40 to-purple-600/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative text-white">Register</span>
+                  <span className="relative text-white">Sign In</span>
                 </Button>
               </Link>
             </motion.div>
@@ -200,21 +189,12 @@ const Header = () => {
                     </Link>
                   </motion.div>
                 ))}
-                <div className="pt-3 space-y-3">
-                  <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button 
-                      variant="ghost"
-                      className="w-full relative overflow-hidden group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                      <span className="relative text-gray-300 group-hover:text-white">Sign In</span>
-                    </Button>
-                  </Link>
+                <div className="pt-3">
                   <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)}>
                     <Button 
                       className="w-full relative overflow-hidden bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
                     >
-                      <span className="relative font-medium">Get Started</span>
+                      <span className="relative font-medium">Sign In</span>
                       <div className="absolute inset-0 rounded-lg border border-white/20" />
                     </Button>
                   </Link>

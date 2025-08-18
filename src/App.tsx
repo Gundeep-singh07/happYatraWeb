@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import BusTrackerPage from "./components/UserDashboard/Dashboard/BusTracker/BusTrackerPage";
 import TripPlannerPage from "./components/UserDashboard/Dashboard/TripPlanner/TripPlannerPage"; // Add this
 import FriendsPage from "./components/UserDashboard/UserProfile/Friends";
+import MapsPage from "./pages/Maps";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/notifications" element={<UserNotifications />} />
           <Route path="/friends" element={<FriendsPage />} />
+          <Route path="/maps" element={<MapsPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
