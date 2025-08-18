@@ -359,7 +359,7 @@ const API_ENDPOINTS = {
   // ++ NEW: CARPOOLING ENDPOINTS ++
   CARPOOLING: {
     ROUTES: ENDPOINTS_CONFIG.CARPOOLING.ROUTES,
-    REQUEST_YATRA: ENDPOINTS_CONFIG.CARPOOLING.REQUEST_YATRA,
+    JOIN: ENDPOINTS_CONFIG.CARPOOLING.JOIN, // <-- UPDATE
   },
   HEALTH: `${API_BASE_URL}/health`,
 };
@@ -583,12 +583,31 @@ class ApiService {
   };
 
   // ++ NEW: Carpooling Methods ++
+  // ++ CARPOOLING METHODS ++
   getCarpoolRoutes = async () => {
     return this.fetchWithRetry(API_ENDPOINTS.CARPOOLING.ROUTES, {
       method: "GET",
       headers: this.getAuthHeaders(),
     });
   };
+
+  createCarpoolRoute = async (routeData: NewCarpoolRouteData) => {
+    return this.fetchWithRetry(API_ENDPOINTS.CARPOOLING.ROUTES, {
+      method: "POST",
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(routeData),
+    });
+  };
+
+  // This function REPLACES the old 'requestToJoinCarpool'
+  joinCarpoolRoute = async (routeId: string) => {
+    const url = API_ENDPOINTS.CARPOOLING.JOIN(routeId);
+    return this.fetchWithRetry(url, {
+      method: "POST",
+      headers: this.getAuthHeaders(),
+    });
+  };
+  // -- END OF CARPOOLING METHODS --
 
   createCarpoolRoute = async (routeData: NewCarpoolRouteData) => {
     return this.fetchWithRetry(API_ENDPOINTS.CARPOOLING.ROUTES, {

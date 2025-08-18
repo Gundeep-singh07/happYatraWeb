@@ -900,8 +900,9 @@ export const API_ENDPOINTS = {
   // ++ NEW: CARPOOLING ENDPOINTS ++
   CARPOOLING: {
     ROUTES: `${API_BASE_URL}/carpooling/routes`,
-    REQUEST_YATRA: (routeId: string) =>
-      `${API_BASE_URL}/carpooling/routes/${routeId}/yatra`,
+    // -- CHANGE 'REQUEST_YATRA' to 'JOIN' --
+    JOIN: (routeId: string) =>
+      `${API_BASE_URL}/carpooling/routes/${routeId}/join`,
   },
   HEALTH: `${API_BASE_URL}/health`,
   TEST: `${API_BASE_URL}/test`,
@@ -1047,7 +1048,7 @@ export interface CarpoolRoute {
   availableSeats: number;
   vehicleDetails?: string;
   fare?: number;
-  yatraRequests: FriendReference[];
+
   passengers: FriendReference[];
   status: "active" | "full" | "completed" | "cancelled";
   createdAt: string;
