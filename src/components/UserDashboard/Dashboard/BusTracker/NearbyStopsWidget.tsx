@@ -1,6 +1,6 @@
 // src/components/Dashboard/BusTracker/NearbyStopsWidget.tsx
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MapPin, Loader2, AlertTriangle, Bus } from "lucide-react";
 import apiService from "../../../../services/apiService";
 

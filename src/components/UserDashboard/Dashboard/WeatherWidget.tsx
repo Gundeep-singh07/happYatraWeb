@@ -15,7 +15,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 
 // Helper to select the correct icon based on weather condition text from the API
 const getWeatherIcon = (conditionText: string) => {

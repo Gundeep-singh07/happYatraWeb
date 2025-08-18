@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -71,7 +71,11 @@ export default function NotificationBadge({
         transition={{ duration: 0.2 }}
         className="relative"
       >
-        <Bell className={`h-5 w-5 ${unreadCount > 0 ? 'text-blue-400' : 'text-gray-300'}`} />
+        <Bell
+          className={`h-5 w-5 ${
+            unreadCount > 0 ? "text-blue-400" : "text-gray-300"
+          }`}
+        />
         {unreadCount > 0 && (
           <Badge
             variant="destructive"

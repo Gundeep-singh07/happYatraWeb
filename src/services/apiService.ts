@@ -11,7 +11,9 @@ const STORAGE_KEYS = {
   PREFERENCES: "happyatra_preferences",
 };
 
-// API Endpoints
+// API Endpoints from constants
+import { API_ENDPOINTS as ENDPOINTS_CONFIG } from "../constants/constants";
+
 const API_ENDPOINTS = {
   AUTH: {
     LOGIN: `${API_BASE_URL}/auth/login`,
@@ -28,6 +30,14 @@ const API_ENDPOINTS = {
     UPDATE_STATS: `${API_BASE_URL}/user/stats`,
     UPLOAD_AVATAR: `${API_BASE_URL}/user/upload-avatar`,
     HEALTH: `${API_BASE_URL}/user/health`,
+    FRIENDS: {
+      CONNECTIONS: ENDPOINTS_CONFIG.USER.FRIENDS.CONNECTIONS,
+      SEARCH: ENDPOINTS_CONFIG.USER.FRIENDS.SEARCH,
+      SEND_REQUEST: ENDPOINTS_CONFIG.USER.FRIENDS.SEND_REQUEST,
+      ACCEPT_REQUEST: ENDPOINTS_CONFIG.USER.FRIENDS.ACCEPT_REQUEST,
+      DECLINE_REQUEST: ENDPOINTS_CONFIG.USER.FRIENDS.DECLINE_REQUEST,
+      REMOVE_FRIEND: ENDPOINTS_CONFIG.USER.FRIENDS.REMOVE_FRIEND,
+    },
   },
   NOTIFICATIONS: {
     LIST: `${API_BASE_URL}/notifications`,
@@ -38,16 +48,15 @@ const API_ENDPOINTS = {
     DATA: `${API_BASE_URL}/bus-system/data`,
     NEARBY_STOPS: `${API_BASE_URL}/bus-system/nearby-stops`,
   },
-  // *** ADDED THIS NEW ENDPOINT SECTION ***
   TRIP_PLANNER: {
     PLAN: `${API_BASE_URL}/trip-planner/plan`,
   },
-  // *** END OF ADDITION ***
   HEALTH: `${API_BASE_URL}/health`,
 };
 
 // API Service Class
 class ApiService {
+  // NOTE: These internal methods can remain as they are, as they are always called with `this.`
   getAuthHeaders(includeContentType = true) {
     const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
     const headers: HeadersInit = {};
@@ -105,11 +114,11 @@ class ApiService {
     return data;
   }
 
-  async fetchWithRetry(
+  fetchWithRetry = async (
     url: string,
     options: RequestInit,
     retries = 2
-  ): Promise<any> {
+  ): Promise<any> => {
     for (let i = 0; i <= retries; i++) {
       try {
         const response = await fetch(url, options);
@@ -124,10 +133,10 @@ class ApiService {
       }
     }
     throw new Error("Max retries exceeded");
-  }
+  };
 
   // Auth methods
-  async login(credentials: any) {
+  login = async (credentials: any) => {
     const result = await this.fetchWithRetry(API_ENDPOINTS.AUTH.LOGIN, {
       method: "POST",
       headers: this.getAuthHeaders(),
@@ -138,9 +147,9 @@ class ApiService {
       localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(result.user));
     }
     return result;
-  }
+  };
 
-  async register(userData: any) {
+  register = async (userData: any) => {
     const result = await this.fetchWithRetry(API_ENDPOINTS.AUTH.REGISTER, {
       method: "POST",
       headers: this.getAuthHeaders(),
@@ -151,10 +160,18 @@ class ApiService {
       localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(result.user));
     }
     return result;
-  }
+  };
+
+  // Health check method
+  healthCheck = async () => {
+    return this.fetchWithRetry(API_ENDPOINTS.HEALTH, {
+      method: "GET",
+      headers: this.getAuthHeaders(false),
+    });
+  };
 
   // User Profile methods
-  async getUserProfile() {
+  getUserProfile = async () => {
     const result = await this.fetchWithRetry(API_ENDPOINTS.USER.PROFILE, {
       method: "GET",
       headers: this.getAuthHeaders(),
@@ -172,63 +189,111 @@ class ApiService {
       }
     }
     return result;
-  }
+  };
 
-  async updateLocation(locationData: any) {
+  updateLocation = async (locationData: any) => {
     return this.fetchWithRetry(API_ENDPOINTS.USER.UPDATE_LOCATION, {
       method: "PUT",
       headers: this.getAuthHeaders(),
       body: JSON.stringify(locationData),
     });
-  }
+  };
 
   // Bus System & Trip Planner Methods
-  async getBusSystemData() {
+  getBusSystemData = async () => {
     return this.fetchWithRetry(API_ENDPOINTS.BUS_SYSTEM.DATA, {
       method: "GET",
       headers: this.getAuthHeaders(),
     });
-  }
+  };
 
-  async getNearbyStops(lat: number, lon: number) {
+  getNearbyStops = async (lat: number, lon: number) => {
     const url = `${API_ENDPOINTS.BUS_SYSTEM.NEARBY_STOPS}?lat=${lat}&lon=${lon}`;
     return this.fetchWithRetry(url, {
       method: "GET",
       headers: this.getAuthHeaders(),
     });
-  }
+  };
 
-  // *** ADDED THIS NEW METHOD ***
-  async planTrip(start: string, end: string) {
+  planTrip = async (start: string, end: string) => {
     return this.fetchWithRetry(API_ENDPOINTS.TRIP_PLANNER.PLAN, {
       method: "POST",
       headers: this.getAuthHeaders(),
       body: JSON.stringify({ start, end }),
     });
-  }
-  // *** END OF ADDITION ***
+  };
+
+  // ++ NEW: Friend Management Methods ++
+  getConnections = async () => {
+    return this.fetchWithRetry(API_ENDPOINTS.USER.FRIENDS.CONNECTIONS, {
+      method: "GET",
+      headers: this.getAuthHeaders(),
+    });
+  };
+
+  searchUsers = async (query: string) => {
+    if (!query) return { success: true, data: { users: [] } };
+    const url = API_ENDPOINTS.USER.FRIENDS.SEARCH(query);
+    return this.fetchWithRetry(url, {
+      method: "GET",
+      headers: this.getAuthHeaders(),
+    });
+  };
+
+  sendFriendRequest = async (userId: string) => {
+    const url = API_ENDPOINTS.USER.FRIENDS.SEND_REQUEST(userId);
+    return this.fetchWithRetry(url, {
+      method: "POST",
+      headers: this.getAuthHeaders(),
+    });
+  };
+
+  acceptFriendRequest = async (userId: string) => {
+    const url = API_ENDPOINTS.USER.FRIENDS.ACCEPT_REQUEST(userId);
+    return this.fetchWithRetry(url, {
+      method: "POST",
+      headers: this.getAuthHeaders(),
+    });
+  };
+
+  declineFriendRequest = async (userId: string) => {
+    const url = API_ENDPOINTS.USER.FRIENDS.DECLINE_REQUEST(userId);
+    return this.fetchWithRetry(url, {
+      method: "DELETE",
+      headers: this.getAuthHeaders(),
+    });
+  };
+
+  removeFriend = async (userId: string) => {
+    const url = API_ENDPOINTS.USER.FRIENDS.REMOVE_FRIEND(userId);
+    return this.fetchWithRetry(url, {
+      method: "DELETE",
+      headers: this.getAuthHeaders(),
+    });
+  };
+  // -- END OF NEW METHODS --
 
   // Utility methods
-  logout() {
+  logout = () => {
     localStorage.removeItem(STORAGE_KEYS.TOKEN);
     localStorage.removeItem(STORAGE_KEYS.USER);
     localStorage.removeItem(STORAGE_KEYS.LOCATION);
     localStorage.removeItem(STORAGE_KEYS.PREFERENCES);
     window.location.href = "/auth";
-  }
+  };
 
-  isAuthenticated() {
+  isAuthenticated = () => {
     return !!localStorage.getItem(STORAGE_KEYS.TOKEN);
-  }
+  };
 
-  getCurrentUser() {
+  getCurrentUser = () => {
     try {
       const userStr = localStorage.getItem(STORAGE_KEYS.USER);
       return userStr ? JSON.parse(userStr) : null;
     } catch (error) {
       return null;
     }
-  }
+  };
 }
 
 const apiService = new ApiService();

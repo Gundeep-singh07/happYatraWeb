@@ -24,6 +24,20 @@ export const API_ENDPOINTS = {
     LOCATION_HISTORY: `${API_BASE_URL}/user/location/history`,
     NEARBY_USERS: `${API_BASE_URL}/user/nearby`,
     UPDATE_STATS: `${API_BASE_URL}/user/stats`,
+    // ++ NEW: Friends endpoints ++
+    FRIENDS: {
+      CONNECTIONS: `${API_BASE_URL}/user/friends/connections`,
+      SEARCH: (query: string) =>
+        `${API_BASE_URL}/user/friends/search?q=${query}`,
+      SEND_REQUEST: (userId: string) =>
+        `${API_BASE_URL}/user/friends/request/${userId}`,
+      ACCEPT_REQUEST: (userId: string) =>
+        `${API_BASE_URL}/user/friends/accept/${userId}`,
+      DECLINE_REQUEST: (userId: string) =>
+        `${API_BASE_URL}/user/friends/decline/${userId}`,
+      REMOVE_FRIEND: (userId: string) =>
+        `${API_BASE_URL}/user/friends/remove/${userId}`,
+    },
   },
   NOTIFICATIONS: {
     LIST: `${API_BASE_URL}/notifications`,
@@ -108,6 +122,16 @@ export interface UserPreferences {
   };
 }
 
+// ++ NEW: A simplified user reference for friend lists ++
+export interface FriendReference {
+  _id: string;
+  fullName: string;
+  profilePicture?: {
+    url: string;
+    publicId: string;
+  };
+}
+
 // User Interface (Updated)
 export interface User {
   _id: string;
@@ -136,6 +160,10 @@ export interface User {
   stats?: UserStats;
   createdAt: string;
   updatedAt: string;
+  // ++ NEW: Fields for the friends system ++
+  friends?: FriendReference[];
+  friendRequestsSent?: FriendReference[];
+  friendRequestsReceived?: FriendReference[];
 }
 
 // Nearby User Interface

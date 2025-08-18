@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+// src/components/Header/header.tsx
+
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User as UserIcon,
@@ -8,9 +10,9 @@ import {
   Bus,
   Bell,
   Train,
-  CloudSun,
   Menu,
   X,
+  Users, // ++ Import the Users icon ++
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { STORAGE_KEYS, User } from "../../../constants/constants";
@@ -44,6 +46,8 @@ const Header = ({ user }: HeaderProps) => {
     { name: "Carpooling", icon: Car, href: "/carpooling" },
     { name: "Bus Tracker", icon: Bus, href: "/bus-tracker" },
     { name: "Metro", icon: Train, href: "/metro" },
+    // ++ NEW NAVIGATION ITEM ++
+    { name: "Friends", icon: Users, href: "/friends" },
   ];
 
   const handleLogout = () => {
@@ -57,13 +61,17 @@ const Header = ({ user }: HeaderProps) => {
     setIsDropdownOpen(false);
   };
 
+  // ... (keep navigateToProfile and handleNavigation functions)
   const handleNavigation = (href: string) => {
     setActiveRoute(href);
     window.location.href = href;
     setIsMobileMenuOpen(false);
   };
 
-  // If no user, show a minimal header
+  // ... (keep the rest of the component as is)
+  // The rest of the file from `if (!user)` onwards remains the same. The new item will be automatically rendered by the existing map functions.
+  // No other changes are needed in this file.
+
   if (!user) {
     return (
       <motion.header
@@ -266,5 +274,4 @@ const Header = ({ user }: HeaderProps) => {
     </motion.header>
   );
 };
-
 export default Header;
