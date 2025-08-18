@@ -74,10 +74,7 @@ const Header = ({ user }: HeaderProps) => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex-shrink-0"
-            >
+            <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
               <h1 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 happYatra
               </h1>
@@ -100,10 +97,7 @@ const Header = ({ user }: HeaderProps) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex-shrink-0"
-          >
+          <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
             <h1 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               happYatra
             </h1>
@@ -122,9 +116,11 @@ const Header = ({ user }: HeaderProps) => {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleNavigation(item.href)}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium
-                    ${isActive
-                      ? "bg-blue-500/20 text-white"
-                      : "text-gray-300 hover:text-white hover:bg-gray-700/50"} 
+                    ${
+                      isActive
+                        ? "bg-blue-500/20 text-white"
+                        : "text-gray-300 hover:text-white hover:bg-gray-700/50"
+                    } 
                     transition-all duration-200`}
                 >
                   <Icon size={18} className={isActive ? "text-blue-400" : ""} />
@@ -245,12 +241,17 @@ const Header = ({ user }: HeaderProps) => {
                       whileHover={{ x: 5 }}
                       onClick={() => handleNavigation(item.href)}
                       className={`flex items-center space-x-3 w-full px-3 py-2 rounded-md text-sm font-medium
-                        ${isActive
-                          ? "bg-blue-500/20 text-white"
-                          : "text-gray-300 hover:text-white hover:bg-gray-700/50"} 
+                        ${
+                          isActive
+                            ? "bg-blue-500/20 text-white"
+                            : "text-gray-300 hover:text-white hover:bg-gray-700/50"
+                        } 
                         transition-all duration-200`}
                     >
-                      <Icon size={18} className={isActive ? "text-blue-400" : ""} />
+                      <Icon
+                        size={18}
+                        className={isActive ? "text-blue-400" : ""}
+                      />
                       <span>{item.name}</span>
                     </motion.button>
                   );

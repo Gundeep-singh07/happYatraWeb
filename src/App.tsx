@@ -10,6 +10,9 @@ import ProfilePage from "./components/UserDashboard/UserProfile/Profile";
 import UserNotifications from "./components/UserDashboard/Dashboard/Notifications/notifications";
 import NotFound from "./pages/NotFound";
 
+import BusTrackerPage from "./components/UserDashboard/Dashboard/BusTracker/BusTrackerPage";
+import TripPlannerPage from "./components/UserDashboard/Dashboard/TripPlanner/TripPlannerPage"; // Add this
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -22,6 +25,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/bus-tracker" element={<BusTrackerPage />} />
+          <Route path="/plan-trip" element={<TripPlannerPage />} />{" "}
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/notifications" element={<UserNotifications />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
