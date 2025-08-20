@@ -361,6 +361,10 @@ const API_ENDPOINTS = {
     ROUTES: ENDPOINTS_CONFIG.CARPOOLING.ROUTES,
     JOIN: ENDPOINTS_CONFIG.CARPOOLING.JOIN, // <-- UPDATE
   },
+  METRO: {
+    STATIONS: `${API_BASE_URL}/metro/stations`,
+    LINES: `${API_BASE_URL}/metro/lines`,
+  },
   HEALTH: `${API_BASE_URL}/health`,
 };
 

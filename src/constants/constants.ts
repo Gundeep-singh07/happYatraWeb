@@ -904,6 +904,10 @@ export const API_ENDPOINTS = {
     JOIN: (routeId: string) =>
       `${API_BASE_URL}/carpooling/routes/${routeId}/join`,
   },
+  METRO: {
+    STATIONS: `${API_BASE_URL}/metro/stations`,
+    LINES: `${API_BASE_URL}/metro/lines`,
+  },
   HEALTH: `${API_BASE_URL}/health`,
   TEST: `${API_BASE_URL}/test`,
 };

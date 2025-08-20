@@ -1,7 +1,7 @@
 // src/components/Carpooling/CarpoolingPage.tsx
 
-import { useState, useEffect, FormEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   Car,
   MapPin,
@@ -19,9 +19,8 @@ import apiService from "../../../../services/apiService";
 import {
   CarpoolRoute,
   User as UserType,
-  NewCarpoolRouteData,
 } from "../../../../constants/constants";
-import { CreateRouteModal } from "./CreateRouteModal"; // We can move the modal to its own file for cleanliness
+import { CreateRouteModal } from "./CreateRouteModal";
 
 const CarpoolingPage = () => {
   const [user, setUser] = useState<UserType | null>(null);
@@ -68,7 +67,6 @@ const CarpoolingPage = () => {
       const result = await apiService.joinCarpoolRoute(routeId);
       if (result.success) {
         alert("Joined successfully!");
-        // Replace the old route data with the updated one from the server
         setRoutes(
           routes.map((r) => (r._id === routeId ? result.data.route : r))
         );
@@ -212,7 +210,6 @@ const CarpoolingPage = () => {
                     </div>
                   </div>
 
-                  {/* ++ PASSENGERS DISPLAY ++ */}
                   {route.passengers.length > 0 && (
                     <div className="mt-4 pt-4 border-t border-gray-800">
                       <h4 className="text-sm font-semibold text-gray-400 mb-2">
@@ -279,8 +276,12 @@ const CarpoolingPage = () => {
         </div>
       </main>
 
-      {/* It's better to move the modal to its own file if it gets complex, but this works */}
-      {/* <CreateRouteModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onRouteCreated={handleRouteCreated} /> */}
+      {/* ++ THIS LINE IS NOW UNCOMMENTED AND WILL WORK ++ */}
+      <CreateRouteModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onRouteCreated={handleRouteCreated}
+      />
     </div>
   );
 };

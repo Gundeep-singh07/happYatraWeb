@@ -61,16 +61,17 @@ const Header = ({ user }: HeaderProps) => {
     setIsDropdownOpen(false);
   };
 
-  // ... (keep navigateToProfile and handleNavigation functions)
+  // ++ NEW FUNCTION: Navigate to dashboard ++
+  const navigateToDashboard = () => {
+    setActiveRoute("/dashboard");
+    window.location.href = "/dashboard";
+  };
+
   const handleNavigation = (href: string) => {
     setActiveRoute(href);
     window.location.href = href;
     setIsMobileMenuOpen(false);
   };
-
-  // ... (keep the rest of the component as is)
-  // The rest of the file from `if (!user)` onwards remains the same. The new item will be automatically rendered by the existing map functions.
-  // No other changes are needed in this file.
 
   if (!user) {
     return (
@@ -82,9 +83,12 @@ const Header = ({ user }: HeaderProps) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <button
+                onClick={navigateToDashboard}
+                className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent hover:from-blue-400 hover:to-purple-400 transition-all duration-300"
+              >
                 happYatra
-              </h1>
+              </button>
             </motion.div>
             <div className="animate-pulse">
               <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
@@ -105,9 +109,12 @@ const Header = ({ user }: HeaderProps) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            <button
+              onClick={navigateToDashboard}
+              className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent hover:from-blue-400 hover:to-purple-400 transition-all duration-300"
+            >
               happYatra
-            </h1>
+            </button>
           </motion.div>
 
           {/* Desktop Navigation */}
